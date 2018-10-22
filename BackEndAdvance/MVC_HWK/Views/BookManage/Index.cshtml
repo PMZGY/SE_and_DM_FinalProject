@@ -1,0 +1,230 @@
+﻿@model MVC_HWK.Model.BookSearchArg
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>圖書維護</h2>
+
+
+@using (Html.BeginForm(new { id = "myform" }))
+{
+    @Html.AntiForgeryToken()
+    @*<label name="Book_Name"></label>*@
+    <div class="form-horizontal">
+        <div class="form-group">
+            <label class="control-label col-md-1 col-md-offset-1">書籍名稱</label>
+            <div class="col-md-10">
+                <input type="text" id="Book_Name">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-1 col-md-offset-1">書籍類別</label>
+            <div class="col-md-10">
+                <input id="Book_Class_Id">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-1 col-md-offset-1">借閱人</label>
+            <div class="col-md-10">
+                <input type="text" id="Book_Keeper">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-1 col-md-offset-1">借閱狀態</label>
+            <div class="col-md-10">
+                <input type="text" id="Book_Status_Id">
+            </div>
+        </div>
+
+
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="button" id="btnSearch" value="查詢" class="btn btn-default" />
+                <button type="button" id="btnInsert" class="btn btn-default" onclick="location.href='@Url.Action("InsertBook", "BookManage")'">新增</button>
+                <button type="button" class="btn btn-default" onclick="location.assign('/BookManage/Index')">消除</button>
+            </div>
+        </div>
+    </div>
+
+}
+<div id="grid"></div>
+
+
+<script type="text/javascript">
+
+    var tempgrid = 0; //grid是否存在
+
+    $("#btnSearch").click(function (e) { //每按一下就長一個Grid，應該去判斷Grid是否存在
+
+        if ($("#grid").data("kendoGrid")) {
+            $("#grid").data("kendoGrid").destroy();
+        }
+        creategrid();
+    });
+    function creategrid() {
+        //Grid的DataSource
+        var dataSrc = new kendo.data.DataSource({
+            transport: {
+                read: {
+                    url: "/BookManage/Index",
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        Book_Name: $("#Book_Name").val(),
+                        Book_Class_Id: $("#Book_Class_Id").data("kendoDropDownList").value(),
+                        Book_Keeper: $("#Book_Keeper").data("kendoDropDownList").value(),
+                        Book_Status_Id: $("#Book_Status_Id").data("kendoDropDownList").value()
+                    }
+                }
+            },
+            pageSize: 20,
+            serverPaging: false,
+            serverSorting: true
+        });
+        //Html.Raw((ViewBag.SearchResult)) 傳回json資料時轉成HTML看得懂的資料
+
+        //設定日期格式
+        var dateRegExp = /^\/Date\((.*?)\)\/$/;
+        window.toDate = function (value) {
+            var date = dateRegExp.exec(value);
+            return new Date(parseInt(date[1]));
+        }
+
+        //判斷是否Grid有存在
+        $("#grid").kendoGrid({
+            dataSource: dataSrc,
+            scrollable: true,
+            sortable: true,
+            filterable: true,
+            pageable: {
+                input: true,
+                numeric: false
+            },
+            columns: [
+                { hidden: true, field: "Book_Id" },
+                { field: "Book_Class_Name", title: "圖書類別", width: "160px", attributes: { style: "text-align:left" } },
+                { field: "Book_Name", title: "書名", width: "450px", attributes: { style: "text-align:left" } },
+                {
+                    field: "Book_Bought_Date", title: "購買日期", width: "120px", attributes: { style: "text-align:center" },
+                    template: '#= kendo.toString(toDate(Book_Bought_Date), "yyyy/MM/dd")#'
+
+                },
+                { field: "Book_Status_Name", title: "借閱狀態", width: "100px", attributes: { style: "text-align:center" } },
+                { field: "Book_Keeper_Cname", title: "借閱人", width: "100px", attributes: { style: "text-align:center" } },
+                {
+                    command: [{
+                        name: "修改",
+                        //width: "30px",
+                        attributes: { style: "text-align:center" },
+                        click: function (e) {
+                            var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+                            $.ajax({
+                                type: "post",
+                                url: "/BookManage/UpdateBook",
+                                data: "BookId=" + dataItem.Book_Id,
+                                datatype: "json",
+                                success: function (response) {
+
+                                },
+                                error: function (error) {
+                                    alert("修改傳ID錯誤");
+                                }
+                            });
+                            location.href = "/BookManage/UpdateBook?BookId=" + dataItem.Book_Id;
+                        }
+                    }]
+                },
+                {
+                    command: [{ //可以直接用template用button，command會綁比較死
+                        name: "刪除",
+                        visible: function (e) {
+                            var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+                            return dataItem.Book_Keeper === "";
+                        },
+                        click: function (e) {
+
+                            if (confirm("是否刪除此筆資料?")) {
+                                var deleteitem = this.dataItem($(e.currentTarget).closest("tr"));
+                                $.ajax({
+                                    type: "post",
+                                    url: "/BookManage/DeleteBook",
+                                    data: "BookId=" + deleteitem.Book_Id,
+                                    datatype: "json",
+                                    success: function (response) {
+                                        if (response.message != "fail") {
+                                            $(deleteitem).remove();
+                                            //偷偷幫他按查詢，同步Grid畫面
+                                            $("#btnSearch").click();
+                                            alert("刪除成功");
+                                        } else {
+                                            alert("借出中，無法刪除");
+                                        }
+
+                                    },
+                                    error: function (error) {
+                                        alert("系統發生錯誤");
+                                    }
+                                });
+
+
+                            } else {
+                                alert("取消刪除");
+                            }
+                        }
+
+                    }]
+                }
+
+
+            ],
+            editable: true,
+            editable: "inline"
+
+        });
+    }
+
+    $(document).ready(function () {
+
+        
+
+        //長DropDownList
+        GetDropdownListTable("#Book_Class_Id", "/BookManage/DropDownListBookClass");
+        GetDropdownListTable("#Book_Keeper", "/BookManage/DropDownListBookKeeper");
+        GetDropdownListTable("#Book_Status_Id", "/BookManage/DropDownListStatus");
+
+        //刪除資料
+        $(".deletebtn").click(function (e) {
+            //e.preventdefault();
+            if (confirm("是否刪除此筆資料?")) {
+                var deleteitem = $(this).closest('tr')
+                alert(deleteitem);
+
+                $.ajax({
+                    type: "post",
+                    url: "/BookManage/DeleteBook",
+                    data: "BookId=" + $(this).next().val(),
+                    datatype: "json",
+                    success: function (response) {
+                        $(deleteitem).remove();
+
+                        alert("刪除成功");
+                    },
+                    error: function (error) {
+                        alert("系統發生錯誤");
+                    }
+                });
+            } else {
+                alert("取消刪除");
+            }
+
+        });
+    });
+
+
+</script>

@@ -1,0 +1,116 @@
+﻿@model MVC_HWK.Model.BookData
+
+@{
+    ViewBag.Title = "InsertBook";
+}
+
+<h2>新增書籍</h2>
+
+<form id="myform">
+    <div class="form-horizontal">
+        <div class="form-group">
+            <label class="control-label col-md-1 col-md-offset-1">書名</label>
+            <div class="col-md-10">
+                <input type="text" id="Book_Name" name="書名" required validationMessage="請輸入 {0}">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-1 col-md-offset-1">作者</label>
+            <div class="col-md-10">
+                <input type="text" id="Book_Author" name="作者" required validationMessage="請輸入 {0}">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-1 col-md-offset-1">出版商</label>
+            <div class="col-md-10">
+                <input type="text" id="Book_Publisher" name="出版商" required validationMessage="請輸入 {0}">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-1 col-md-offset-1">內容簡介</label>
+            <div class="col-md-10">
+                <textarea id="Book_Note" name="內容簡介" cols="25" rows="5" required validationmessage="請輸入 {0}"></textarea>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label class="control-label col-md-1 col-md-offset-1">購書日期</label>
+            <div class="col-md-10">
+                <input id="Book_Bought_Date" name="購書日期" required validationMessage="請輸入 {0}">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-1 col-md-offset-1">圖書類別</label>
+            <div class="col-md-10">
+                <input id="Book_Class_Id" name="圖書類別" required validationMessage="請輸入 {0}">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <button type="button" id="Save" class="btn btn-default">存檔</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<div>
+    @Html.ActionLink("回上一頁", "Index")
+</div>
+
+<script>
+    var validator = $("#myform").kendoValidator().data("kendoValidator");
+
+    //新增書籍
+    $("#Save").click(function (e) {
+        //驗證
+        if (validator.validate()) {
+            //驗證日期
+            if (new Date($("#Book_Bought_Date").val()) < new Date(-8640000000000000) || new Date($("#Book_Bought_Date").val()) > new Date) {
+                alert("時間錯誤，新增失敗");
+            } else {
+                $.ajax({
+                    type: "post",
+                    url: "/BookManage/InsertBook",
+                    data: {
+                        Book_Name: $("#Book_Name").val(),
+                        Book_Class_Id: $("#Book_Class_Id").val(),
+                        Book_Author: $("#Book_Author").val(),
+                        Book_Bought_Date: $("#Book_Bought_Date").val(),
+                        Book_Publisher: $("#Book_Publisher").val(),
+                        Book_Note: $("#Book_Note").val()
+                    },
+                    datatype: "json",
+                    success: function (response) {
+                        alert("新增成功!");
+                    },
+                    error: function (error) {
+                        alert("系統發生錯誤");
+                    }
+                });
+            }
+        } else {
+
+            alert("新增失敗");
+        }
+
+
+    });
+
+    $(document).ready(function () {
+
+        GetDropdownListTable("#Book_Class_Id", "/BookManage/DropDownListBookClass");
+
+
+        $("#Book_Bought_Date").kendoDatePicker({
+            format: "yyyy/MM/dd"
+        });
+
+    });
+</script>

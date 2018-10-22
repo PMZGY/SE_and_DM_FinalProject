@@ -1,0 +1,239 @@
+﻿@model MVC_HWK.Model.BookData
+
+@{
+    ViewBag.Title = "UpdateBook";
+}
+
+<h2>修改書籍內容</h2>
+
+<form id="myform">
+    <div class="form-horizontal">
+        <div class="form-group">
+            <input hidden id="Book_Id">
+            <label class="control-label col-md-1 col-md-offset-1">書名</label>
+            <div class="col-md-10">
+                <input type="text" id="Book_Name" name="書名" value="Book_Name" required validationMessage="請輸入 {0}">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-1 col-md-offset-1">作者</label>
+            <div class="col-md-10">
+                <input type="text" id="Book_Author" name="作者" required validationMessage="請輸入 {0}">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-1 col-md-offset-1">出版商</label>
+            <div class="col-md-10">
+                <input type="text" id="Book_Publisher" name="出版商" required validationMessage="請輸入 {0}">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-1 col-md-offset-1">內容簡介</label>
+            <div class="col-md-10">
+                <textarea cols="25" rows="5" id="Book_Note" name="內容簡介" required validationMessage="請輸入 {0}"> </textarea>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-1 col-md-offset-1">購書日期</label>
+            <div class="col-md-10">
+                <input id="Book_Bought_Date" name="購書日期" required validationMessage="請輸入 {0}">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-1 col-md-offset-1">圖書類別</label>
+            <div class="col-md-10">
+                <input id="Book_Class_Id" name="圖書類別" required validationMessage="請輸入 {0}">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-1 col-md-offset-1">借閱狀態</label>
+            <div class="col-md-10">
+                <input id="Book_Status_Id" name="借閱狀態" required validationMessage="請輸入 {0}">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-1 col-md-offset-1">借閱人</label>
+            <div class="col-md-10">
+                <input id="Book_Keeper">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <button type="button" id="Save" class="btn btn-default">存檔</button>
+                <button type="button" id="deletebtn" class="btn btn-default">刪除</button>
+            </div>
+        </div>
+
+    </div>
+</form>
+
+<div>
+    @Html.ActionLink("回上一頁", "Index")
+</div>
+
+<script>
+
+
+    var validator = $("#myform").kendoValidator().data("kendoValidator");
+    $("#Save").click(function (e) {
+        //驗證是否正確
+        if (validator.validate()) {
+            //日期驗證
+            if (new Date($("#Book_Bought_Date").val()) < new Date(-8640000000000000) || new Date($("#Book_Bought_Date").val()) > new Date) {
+                alert("時間錯誤，修改失敗");
+            } else {
+                //狀態與借閱人驗證
+                if (($("#Book_Status_Id").data('kendoDropDownList').value() == 'B' ||
+                    $("#Book_Status_Id").data('kendoDropDownList').value() == 'C') &&
+                    $("#Book_Keeper").val() == "") {
+                    alert("書本已借出，請選擇借閱人");
+                } else {
+                    $.ajax({
+                        type: "post",
+                        url: "/BookManage/UpdateBook",
+                        data: {
+                            Book_Id: $("#Book_Id").val(),
+                            Book_Name: $("#Book_Name").val(),
+                            Book_Class_Id: $("#Book_Class_Id").val(),
+                            Book_Author: $("#Book_Author").val(),
+                            Book_Bought_Date: $("#Book_Bought_Date").val(),
+                            Book_Publisher: $("#Book_Publisher").val(),
+                            Book_Note: $("#Book_Note").val(),
+                            Book_Keeper: $("#Book_Keeper").val(),
+                            Book_Status_Id: $("#Book_Status_Id").val()
+                        },
+                        datatype: "json",
+                        success: function (response) {
+                            alert("修改成功!");
+                        },
+                        error: function (error) {
+                            alert("系統發生錯誤");
+                        }
+                    });
+                }
+            }
+        } else {
+
+            alert("修改失敗");
+        }
+    });
+
+    //取URL上的BookID
+    function GetIdFromUrl() {
+        var strUrl = location.href;
+        var url = new URL(strUrl);
+        var id = url.searchParams.get("BookId");
+        return id;
+    }
+
+    //下拉式選單Keeper與Status連動
+    $("#Book_Keeper").change(function (e) {
+
+        //var index = $('#input').data('kendoDropDownList').select();
+        if ($("#Book_Keeper").val() != "") {
+            $("#Book_Status_Id").data('kendoDropDownList').value("B");
+
+        } else {
+            $("#Book_Status_Id").data('kendoDropDownList').value("A");
+        }
+    })
+
+    //下拉式選單Status與Keeper連動
+    $("#Book_Status_Id").change(function (e) {
+
+        if ($("#Book_Status_Id").val() != "") {
+            if ($("#Book_Status_Id").data('kendoDropDownList').value() == 'U') {
+                $("#Book_Keeper").data('kendoDropDownList').value("");
+                $("#Book_Keeper").data('kendoDropDownList').enable(false);
+            } else {
+                $("#Book_Keeper").data('kendoDropDownList').enable(true);
+                if ($("#Book_Status_Id").data('kendoDropDownList').value() == 'A') {
+                    $("#Book_Keeper").data('kendoDropDownList').value("");
+                }
+            }
+        } else {
+
+        }
+    })
+
+
+    $(document).ready(function () {
+
+        //修改日期格式
+        var dateRegExp = /^\/Date\((.*?)\)\/$/;
+        window.toDate = function (value) {
+            var date = dateRegExp.exec(value);
+            return new Date(parseInt(date[1]));
+        }
+
+        //接收書籍資料
+        $.ajax({
+            url: "/BookManage/LoadBookData",
+            data: {
+                BookId: GetIdFromUrl()
+            },
+            datatype: "json",
+            success: function (response) {
+                var date = kendo.toString(toDate(response.Book_Bought_Date), "yyyy/MM/dd")
+
+                $("#Book_Id").val(GetIdFromUrl());
+                $("#Book_Name").val(response.Book_Name);
+                $("#Book_Author").val(response.Book_Author);
+                $("#Book_Bought_Date").val(date);
+                $("#Book_Publisher").val(response.Book_Publisher);
+                $("#Book_Note").val(response.Book_Note);
+
+                //長Dropdownlist
+                GetDropdownListTable("#Book_Class_Id", "/BookManage/DropDownListBookClass", response.Book_Class_Id);
+                GetDropdownListTable("#Book_Status_Id", "/BookManage/DropDownListStatus", response.Book_Status_Id);
+                GetDropdownListTable("#Book_Keeper", "/BookManage/DropDownListBookKeeper", response.Book_Keeper);
+            },
+            error: function (error) {
+                alert("傳送資料時，系統發生錯誤");
+            }
+        });
+
+
+        $("#Book_Bought_Date").kendoDatePicker({
+            format: "yyyy/MM/dd"
+        });
+
+        //刪除功能
+        $("#deletebtn").click(function (e) {
+                if (confirm("是否刪除此筆資料?")) {
+                    $.ajax({
+                        type: "post",
+                        url: "/BookManage/DeleteBook",
+                        data: "BookId=" + $("#Book_Id").val(),
+                        datatype: "json",
+                        success: function (response) {
+                            //history.go(-1);
+                            if (response.message != "fail") {
+                                location.assign("/BookManage/Index");
+                                alert("刪除成功");
+                            } else {
+                                alert("借出中，無法刪除");
+                            }
+
+                        },
+                        error: function (error) {
+                            alert("刪除時，系統發生錯誤");
+                        }
+                    });
+                } else {
+                    alert("取消刪除");
+                }
+        });
+    });
+</script>
+
+
+

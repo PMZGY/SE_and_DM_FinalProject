@@ -1,0 +1,16 @@
+C:\Users\miko\Desktop\FrontEndAdvance_HWK5\MVC_HWK.Model\bin\Debug\MVC_HWK.Model.dll
+C:\Users\miko\Desktop\FrontEndAdvance_HWK5\MVC_HWK.Model\bin\Debug\MVC_HWK.Model.pdb
+C:\Users\miko\Desktop\FrontEndAdvance_HWK5\MVC_HWK.Model\bin\Debug\System.Web.Mvc.dll
+C:\Users\miko\Desktop\FrontEndAdvance_HWK5\MVC_HWK.Model\bin\Debug\System.Web.Mvc.xml
+C:\Users\miko\Desktop\FrontEndAdvance_HWK5\MVC_HWK.Model\bin\Debug\zh-Hant\System.Web.Mvc.resources.dll
+C:\Users\miko\Desktop\FrontEndAdvance_HWK5\MVC_HWK.Model\obj\Debug\MVC_HWK.Model.csproj.CoreCompileInputs.cache
+C:\Users\miko\Desktop\FrontEndAdvance_HWK5\MVC_HWK.Model\obj\Debug\MVC_HWK.Model.dll
+C:\Users\miko\Desktop\FrontEndAdvance_HWK5\MVC_HWK.Model\obj\Debug\MVC_HWK.Model.pdb
+D:\叡揚Git上傳\BackEndAdvance_HWK6\MVC_HWK.Model\bin\Debug\MVC_HWK.Model.dll
+D:\叡揚Git上傳\BackEndAdvance_HWK6\MVC_HWK.Model\bin\Debug\MVC_HWK.Model.pdb
+D:\叡揚Git上傳\BackEndAdvance_HWK6\MVC_HWK.Model\bin\Debug\System.Web.Mvc.dll
+D:\叡揚Git上傳\BackEndAdvance_HWK6\MVC_HWK.Model\bin\Debug\System.Web.Mvc.xml
+D:\叡揚Git上傳\BackEndAdvance_HWK6\MVC_HWK.Model\bin\Debug\zh-Hant\System.Web.Mvc.resources.dll
+D:\叡揚Git上傳\BackEndAdvance_HWK6\MVC_HWK.Model\obj\Debug\MVC_HWK.Model.csproj.CoreCompileInputs.cache
+D:\叡揚Git上傳\BackEndAdvance_HWK6\MVC_HWK.Model\obj\Debug\MVC_HWK.Model.dll
+D:\叡揚Git上傳\BackEndAdvance_HWK6\MVC_HWK.Model\obj\Debug\MVC_HWK.Model.pdb

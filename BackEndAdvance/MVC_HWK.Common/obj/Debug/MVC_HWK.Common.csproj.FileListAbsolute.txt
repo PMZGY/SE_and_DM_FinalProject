@@ -1,0 +1,15 @@
+C:\Users\miko\Desktop\FrontEndAdvance_HWK5\MVC_HWK.Common\bin\Debug\MVC_HWK.Common.dll
+C:\Users\miko\Desktop\FrontEndAdvance_HWK5\MVC_HWK.Common\bin\Debug\MVC_HWK.Common.pdb
+C:\Users\miko\Desktop\FrontEndAdvance_HWK5\MVC_HWK.Common\obj\Debug\MVC_HWK.Common.csproj.CoreCompileInputs.cache
+C:\Users\miko\Desktop\FrontEndAdvance_HWK5\MVC_HWK.Common\obj\Debug\MVC_HWK.Common.dll
+C:\Users\miko\Desktop\FrontEndAdvance_HWK5\MVC_HWK.Common\obj\Debug\MVC_HWK.Common.pdb
+C:\Users\miko\Desktop\FrontEndAdvance_HWK5\MVC_HWK.Common\bin\Debug\log4net.dll
+C:\Users\miko\Desktop\FrontEndAdvance_HWK5\MVC_HWK.Common\bin\Debug\log4net.xml
+C:\Users\miko\Desktop\FrontEndAdvance_HWK5\MVC_HWK.Common\obj\Debug\MVC_HWK.Common.csprojResolveAssemblyReference.cache
+D:\叡揚Git上傳\BackEndAdvance_HWK6\MVC_HWK.Common\bin\Debug\MVC_HWK.Common.dll
+D:\叡揚Git上傳\BackEndAdvance_HWK6\MVC_HWK.Common\bin\Debug\MVC_HWK.Common.pdb
+D:\叡揚Git上傳\BackEndAdvance_HWK6\MVC_HWK.Common\bin\Debug\log4net.dll
+D:\叡揚Git上傳\BackEndAdvance_HWK6\MVC_HWK.Common\bin\Debug\log4net.xml
+D:\叡揚Git上傳\BackEndAdvance_HWK6\MVC_HWK.Common\obj\Debug\MVC_HWK.Common.csproj.CoreCompileInputs.cache
+D:\叡揚Git上傳\BackEndAdvance_HWK6\MVC_HWK.Common\obj\Debug\MVC_HWK.Common.dll
+D:\叡揚Git上傳\BackEndAdvance_HWK6\MVC_HWK.Common\obj\Debug\MVC_HWK.Common.pdb
