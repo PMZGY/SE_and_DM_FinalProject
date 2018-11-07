@@ -18,6 +18,9 @@ namespace MVC_HWK.Service
                 case "Y":
                     result = new MVC_HWK.Dao.BookTestDao();
                     break;
+                case "Y":
+                    result = new MVC_HWK.Dao.BookTestDao();
+                    break;
                 case "N":
                     result = new MVC_HWK.Dao.BookDao();
                     break;
