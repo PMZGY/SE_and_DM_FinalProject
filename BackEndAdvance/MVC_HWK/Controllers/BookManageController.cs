@@ -96,7 +96,7 @@ namespace MVC_HWK.Controllers
             {
                 BookService.DeleteBookById(BookId);
                 return this.Json(true);
-
+                // 3
             }
             catch (Exception ex)
             {
