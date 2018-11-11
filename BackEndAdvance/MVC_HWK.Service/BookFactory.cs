@@ -15,7 +15,16 @@ namespace MVC_HWK.Service
 
             switch (Common.ConfigTool.GetAppsetting("DaoInTest"))
             {
+//<<<<<<< HEAD
                // test embedded-2
+//=======
+//<<<<<<< HEAD
+               // case "PONPON"
+               // case "Y":
+//=======
+               // test embedded
+//>>>>>>> c846764775ba572e03931029ffab48ea7c7796e6
+//>>>>>>> 10163a5d9967a44afe06010c5745c761590b63db
                 case "Y":
                     result = new MVC_HWK.Dao.BookTestDao();
                     break;
